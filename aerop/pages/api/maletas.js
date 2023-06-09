@@ -41,7 +41,7 @@ export default async (req, res) => {
       const nuevaMaleta = {
         pasajeroId: ObjectId(pasajeroId),
         peso,
-        despachada
+        despachada:false
       };
 
       await db.collection("maletas").insertOne(nuevaMaleta);

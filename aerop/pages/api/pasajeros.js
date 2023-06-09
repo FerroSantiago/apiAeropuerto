@@ -38,21 +38,21 @@ export default async (req, res) => {
 
       res.status(201).json({ message: "Pasajero creado exitosamente", pasajero: nuevoPasajero });
     } else if (req.method === "PUT") {
-      // Añadir maletas a un pasajero existente
-      const { id, maletas } = req.body;
+      // Añadir maleta a un pasajero existente
+      const { id, maleta } = req.body;
 
       // Validar los datos recibidos
-      if (!id || !maletas || !Array.isArray(maletas)) {
-        return res.status(400).json({ error: "ID y maletas son campos obligatorios y maletas debe ser un array" });
+      if (!id || !maleta || typeof maleta !== "object") {
+        return res.status(400).json({ error: "ID y maletas son campos obligatorios y maleta debe ser un objeto" });
       }
 
       // Validar que los elementos del array sean números decimales
-      if (!maletas.every((peso) => typeof peso === "number" && Number.isFinite(peso))) {
-        return res.status(400).json({ error: "El campo maletas debe contener solo números decimales" });
+      if (typeof maleta.peso !== "number" || !Number.isFinite(maleta.peso)) {
+        return res.status(400).json({ error: "El campo peso de la maleta debe ser un número decimal" });
       }
 
-      const filtro = { _id: id };
-      const actualizacion = { $push: { maletas: { $each: maletas } } };
+      const filtro = { _id: ObjectId(id) };
+      const actualizacion = { $push: { maletas: maleta } };
 
       await db.collection("pasajeros").updateOne(filtro, actualizacion);
 
