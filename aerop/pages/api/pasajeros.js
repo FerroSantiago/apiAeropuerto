@@ -42,7 +42,7 @@ export default async (req, res) => {
       const { id, maleta } = req.body;
 
       // Validar los datos recibidos
-      if (!id || !maleta || typeof maleta !== "object") {
+      if (!id || !maleta) {
         return res.status(400).json({ error: "ID y maletas son campos obligatorios y maleta debe ser un objeto" });
       }
 
