@@ -1,4 +1,5 @@
 import clientPromise from "../../lib/mongodb";
+import { ObjectId } from "mongodb";
 
 export default async (req, res) => {
   try {
@@ -27,17 +28,20 @@ export default async (req, res) => {
       res.json(pasajeros);
     } else if (req.method === "POST") {
       // Crear un nuevo pasajero
-      const { nombre, numeroVuelo } = req.body;
+      const { nombre, numeroVuelo, horario, maletas, desde, hacia } = req.body;
 
       // Validar los datos recibidos
-      if (!nombre || !numeroVuelo) {
-        return res.status(400).json({ error: "Nombre y número de vuelo son campos obligatorios" });
+      if (!nombre || !numeroVuelo || !horario || !desde || !hacia) {
+        return res.status(400).json({ error: "Nombre, número de vuelo, desde y hacia son campos obligatorios" });
       }
 
       const nuevoPasajero = {
         nombre,
         numeroVuelo,
-        maletas: []
+        horario,
+        maletas,
+        desde,
+        hacia
       };
 
       await db.collection("pasajeros").insertOne(nuevoPasajero);
@@ -49,7 +53,7 @@ export default async (req, res) => {
 
       // Validar los datos recibidos
       if (!id || !maleta) {
-        return res.status(400).json({ error: "ID y maletas son campos obligatorios y maleta debe ser un objeto" });
+        return res.status(400).json({ error: "ID y maletas son campos obligatorios" });
       }
 
       // Validar que los elementos del array sean números decimales
@@ -58,7 +62,7 @@ export default async (req, res) => {
       }
 
       const filtro = { _id: ObjectId(id) };
-      const actualizacion = { $push: { maletas: maleta } };
+      const actualizacion = { $push: { maletas: { $each: maletas } } };
 
       await db.collection("pasajeros").updateOne(filtro, actualizacion);
 
