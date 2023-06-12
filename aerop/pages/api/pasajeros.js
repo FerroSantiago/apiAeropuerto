@@ -10,6 +10,12 @@ export default async (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
+    // Verificar si es una solicitud OPTIONS
+    if (req.method === 'OPTIONS') {
+      // Responder con un estado 200 OK para la solicitud OPTIONS
+      return res.status(200).end();
+    }
+
     if (req.method === "GET") {
       // Obtener todos los pasajeros
       const pasajeros = await db
