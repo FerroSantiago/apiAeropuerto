@@ -2,14 +2,14 @@ import clientPromise from "../../lib/mongodb";
 import { ObjectId } from "mongodb";
 
 export default async (req, res) => {
+   //Encabezados CORS
+   res.setHeader('Access-Control-Allow-Origin', '*');
+   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT');
+   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
   try {
     const client = await clientPromise;
-    const db = client.db("aeropuerto");
-
-      //Encabezados CORS
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT');
-      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    const db = client.db("aeropuerto");    
 
     if(req.method === "GET") {
         // Obtener las maletas de un pasajero
