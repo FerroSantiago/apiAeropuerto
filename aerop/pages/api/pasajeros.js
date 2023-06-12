@@ -62,7 +62,7 @@ export default async (req, res) => {
       }
 
       const filtro = { _id: ObjectId(id) };
-      const actualizacion = { $push: { maletas: { $each: maletas } } };
+      const actualizacion = { $push: { maletas: nuevaMaleta } };
 
       await db.collection("pasajeros").updateOne(filtro, actualizacion);
 
