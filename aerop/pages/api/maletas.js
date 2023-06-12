@@ -26,7 +26,7 @@ export default async (req, res) => {
         res.status(200).json({ maletas });
     } else if (req.method === "POST") {
       // Crear una nueva maleta y asociarla a un pasajero existente
-      const { pasajeroId, peso, despachada } = req.body;
+      const { pasajeroId, vuelo, maletaId, peso, despachada } = req.body;
 
       // Validar los datos recibidos
       if (!pasajeroId || !peso) {
@@ -40,16 +40,18 @@ export default async (req, res) => {
 
       const nuevaMaleta = {
         pasajeroId: ObjectId(pasajeroId),
-        peso,
+        maletaId: ObjectId(maletaId),
+        peso: peso,
+        vuelo: vuelo,
         despachada:false
       };
 
       await db.collection("maletas").insertOne(nuevaMaleta);
 
       // Actualizar la colección de pasajeros para incluir la nueva maleta
-      const filtro = { _id: ObjectId(pasajeroId) };
-      const actualizacion = { $push: { maletas: nuevaMaleta } };
-      await db.collection("pasajeros").updateOne(filtro, actualizacion);
+      // const filtro = { _id: ObjectId(pasajeroId) };
+      // const actualizacion = { $push: { maletas: nuevaMaleta } };
+      // await db.collection("pasajeros").updateOne(filtro, actualizacion);
 
       res.status(201).json({ message: "Maleta creada exitosamente", maleta: nuevaMaleta });
     } else {
