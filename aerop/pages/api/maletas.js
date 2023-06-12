@@ -6,10 +6,10 @@ export default async (req, res) => {
     const client = await clientPromise;
     const db = client.db("aeropuerto");
 
-    // Encabezados CORS
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      //Encabezados CORS
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
     if(req.method === "GET") {
         // Obtener las maletas de un pasajero
