@@ -72,6 +72,6 @@ export default async (req, res) => {
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Se produjo un error en el servidor" });
+    res.status(500).json({ error: error });
   }
 };
